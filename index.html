@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026 ICT와 체육측정평가 계절학기 중간고사</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Malgun Gothic',sans-serif;background:#eef1f5;color:#111;font-size:15px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding:0 14px}
+.card{background:#fff;border-radius:14px;padding:36px 28px;box-shadow:0 2px 24px rgba(0,0,0,.08);margin:50px auto;max-width:430px;text-align:center}
+.card h1{font-size:19px;font-weight:800;margin-bottom:6px;color:#1e3a6e}
+.card .sub{font-size:13px;color:#777;margin-bottom:24px}
+.card input{width:100%;border:1.5px solid #d0d5dd;border-radius:9px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:11px}
+.card input:focus{border-color:#2c5aa0}
+.btn{width:100%;background:#2c5aa0;color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-family:inherit;cursor:pointer;font-weight:700}
+.btn:hover{background:#1e4080}
+.err{color:#c62828;font-size:13px;margin-top:8px;min-height:18px;line-height:1.6}
+.note{background:#fff8e1;border:1px solid #f0c14b;border-radius:9px;padding:12px 14px;font-size:12.5px;color:#665;margin-top:16px;line-height:1.7;text-align:left}
+#exam{display:none;padding-bottom:84px}
+.topbar{position:sticky;top:0;z-index:50;background:#2c5aa0;color:#fff;padding:11px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.topbar .title{font-size:14px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.timer{font-size:16px;font-weight:800;background:rgba(255,255,255,.15);border-radius:8px;padding:5px 11px;font-variant-numeric:tabular-nums}
+.timer.warn{background:#e53935;animation:blink 1s steps(2,start) infinite}
+@keyframes blink{50%{opacity:.4}}
+.hbtn{background:#fff;color:#2c5aa0;border:none;border-radius:8px;padding:7px 11px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer}
+.hbtn.save{background:#ffd54f;color:#5a4500}
+.savemsg{font-size:11px;background:#2c5aa0;color:#bfe3c0;text-align:right;min-height:14px;padding:2px 14px 0}
+.examhead{background:#fff;border-radius:12px;padding:18px 20px;margin:14px 0;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.examhead h2{font-size:17px;color:#1e3a6e;margin-bottom:4px}
+.examhead p{font-size:13px;color:#777}
+.stuinfo{font-size:13px;color:#555;margin-top:8px;padding-top:8px;border-top:1px dashed #ddd}
+.sec-label{background:#2c5aa0;color:#fff;border-radius:9px;padding:8px 16px;font-size:14px;font-weight:700;margin:20px 0 10px}
+.q{background:#fff;border-radius:12px;padding:20px 18px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.q-head{margin-bottom:10px;display:flex;align-items:flex-start;gap:8px}
+.q-no{font-weight:800;color:#2c5aa0;font-size:15px;white-space:nowrap}
+.q-pts{background:#e8f0fe;color:#1a3a8c;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;white-space:nowrap}
+.q-text{font-size:14.5px;line-height:1.65;flex:1}
+.q-sub{font-size:13px;color:#555;margin:6px 0 10px;padding:8px 12px;background:#f8f9fa;border-radius:7px;line-height:1.6}
+.opt{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;border-radius:8px;cursor:pointer;margin-bottom:5px;border:1.5px solid #e8ecf1;transition:background .1s,border-color .1s}
+.opt:hover{background:#f0f4ff;border-color:#aac0e8}
+.opt.sel{background:#e8f0fe;border-color:#2c5aa0}
+.onum{font-weight:700;color:#2c5aa0;font-size:14px;white-space:nowrap}
+.otext{font-size:14px;line-height:1.55;flex:1}
+textarea{width:100%;border:1.5px solid #d0d5dd;border-radius:9px;padding:12px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:110px;margin-top:6px}
+textarea:focus{border-color:#2c5aa0}
+.field-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.field-key{font-size:13px;font-weight:600;color:#444;white-space:nowrap;min-width:60px}
+.field-inp{flex:1;border:1.5px solid #d0d5dd;border-radius:7px;padding:8px 11px;font-size:14px;font-family:inherit;outline:none}
+.field-inp:focus{border-color:#2c5aa0}
+.prog-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #dde;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 -2px 10px rgba(0,0,0,.07);z-index:40}
+.prog-info{font-size:13px;color:#555}
+.submit-btn{background:#c62828;color:#fff;border:none;border-radius:10px;padding:11px 24px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer}
+.submit-btn:hover{background:#a01010}
+#lock{display:none;position:fixed;inset:0;background:#000;z-index:999;align-items:center;justify-content:center;flex-direction:column}
+#lock p{color:#fff;font-size:20px;margin-bottom:12px;text-align:center}
+#lock-cnt{color:#ffd54f;font-size:60px;font-weight:800}
+#done{display:none}
+.done-card{background:#fff;border-radius:14px;padding:40px 28px;text-align:center;max-width:430px;margin:60px auto;box-shadow:0 2px 24px rgba(0,0,0,.08)}
+.done-card h2{font-size:22px;color:#1b5e20;margin-bottom:12px}
+.done-card p{color:#555;font-size:14px;line-height:1.7}
+#conn{display:none;text-align:center;padding:60px 20px}
+.tbl-wrap{overflow-x:auto;margin:8px 0 12px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border:1px solid #ccc;padding:7px 10px;text-align:center}
+th{background:#e8f0fe;font-weight:700;color:#1a3a8c}
+td{background:#fff}
+.bokgi{display:inline-block;background:#f3f0ff;border:1px solid #c5b8f0;border-radius:6px;padding:2px 8px;margin:2px;font-size:13px}
+.q-img{max-width:100%;border-radius:8px;margin:8px 0;display:block}
+.img-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.img-row img{max-width:calc(50% - 4px);border-radius:6px}
+</style>
+</head>
+<body>
+
+<!-- ══ 로그인 화면 ══ -->
+<div id="login" class="card">
+  <h1>ICT와 체육측정평가</h1>
+  <div class="sub">2026 계절학기 중간고사 · 백석대학교 특수체육교육학과</div>
+  <input id="sid" placeholder="학번" inputmode="numeric">
+  <input id="sname" placeholder="이름">
+  <input id="code" placeholder="접속 코드" type="password" onkeydown="if(event.key==='Enter')enter()">
+  <button class="btn" onclick="enter()">입장</button>
+  <div class="err" id="login-err"></div>
+  <div class="note">
+    ※ 시험 시작 전까지 입장이 제한됩니다.<br>
+    ※ 창 전환·이탈 시 60초 잠금 + 이탈 횟수가 기록됩니다.<br>
+    ※ 30초마다 자동 저장됩니다. 상단 💾 버튼으로 수동 저장도 가능합니다.
+  </div>
+</div>
+
+<!-- ══ 연결 테스트 확인 화면 ══ -->
+<div id="conn">
+  <div class="done-card">
+    <h2>✅ 연결 성공</h2>
+    <p><span id="conn-name"></span> 님, 서버 연결이 정상입니다.<br>시험 시작 코드는 시험 당일 공지됩니다.</p>
+  </div>
+</div>
+
+<!-- ══ 시험 화면 ══ -->
+<div id="exam">
+  <div class="topbar wrap">
+    <span class="title">ICT와 체육측정평가 계절중간고사</span>
+    <button class="hbtn save" onclick="manualSave()">💾 저장</button>
+    <span class="timer" id="timer">--:--</span>
+    <button class="hbtn" onclick="submitExam(false)">제출</button>
+  </div>
+  <div class="savemsg" id="savemsg"></div>
+  <div class="wrap">
+    <div class="examhead">
+      <h2>2026 계절학기 중간고사</h2>
+      <p>ICT와 체육측정평가 · 백석대학교 특수체육교육학과</p>
+      <p>총 48문항 · 100점 만점 · 객관식 2점 / 주관식 별도 배점</p>
+      <div class="stuinfo" id="stuinfo"></div>
+    </div>
+    <div class="sec-label">📝 객관식 (1~48번 중 객관식, 각 2점)</div>
+    <div id="questions"></div>
+    <div class="sec-label">✏️ 서술·계산형 (별도 배점)</div>
+    <div id="essay-questions"></div>
+  </div>
+  <div class="prog-bar">
+    <span class="prog-info">응답 완료: <b id="prog">0</b> / 48문항</span>
+    <button class="submit-btn" onclick="submitExam(false)">최종 제출</button>
+  </div>
+</div>
+
+<!-- ══ 잠금 화면 ══ -->
+<div id="lock">
+  <p>⚠️ 창 이탈이 감지되었습니다.<br>잠시 후 자동으로 해제됩니다.</p>
+  <div id="lock-cnt">60</div>
+</div>
+
+<!-- ══ 제출 완료 화면 ══ -->
+<div id="done">
+  <div class="done-card">
+    <h2>✅ 제출 완료</h2>
+    <p id="done-msg"></p>
+  </div>
+</div>
+
+<script>
+// ═══════════════════ 교수 설정 영역 (여기만 수정) ═══════════════════
+const EXAM_CONFIG = {
+  examDate:     '2026-07-01',          // 시험 당일 날짜
+  mainCode:     '5432',                // 학생 접속 코드
+  durationMin:  55,                    // 개인별 시험시간: 입장한 순간부터 55분
+  hardEnd:      '2026-07-01T14:05',    // 절대 마감: 14:05 이후 전원 자동 제출·입장 불가
+  recoveryCode: '8651',                // 교수 관리자 코드
+  scriptURL:    'PASTE_GAS_URL_HERE'   // ★ GAS 배포 후 URL 붙여넣기
+};
+const SUBJECT = 'ict_measurement_mid';
+const LOCK_SEC = 60;
+// ════════════════════════════════════════════════════════════════════
+
+// ── 문항 데이터 ──
+const MC = [
+  // ▶ 1~4번: 신체활동 개념
+  {n:3, p:2, q:'다음 중 WHO 신체활동 가이드라인(2020)의 비장애인 권고 사항으로 가장 옳지 않은 것은?',
+    opts:['아동·청소년(5~17세)은 하루 평균 60분 이상의 중간~고강도 신체활동과 함께, 주 3회 이상 근력·뼈 강화 운동이 권장된다',
+          '성인(18~64세)은 고강도 활동 시 주 75~150분에 더해 근력운동을 주 2회 이상 병행해야 한다',
+          '노인(65세+)은 성인 기준의 중강도·고강도 유산소 권장량을 그대로 따르며, 추가로 낙상예방 균형·기능 운동을 주 2회 이상 수행해야 한다',
+          '좌식행동(스크린 시간 등) 줄이기는 주로 아동·청소년에게만 명시된 권고사항이며, 노인은 별도 기준이 없다']},
+
+  // ▶ 5~7번: 측정과 평가
+  {n:5, p:2, q:'다음 중 측정과 평가에 관한 설명으로 옳지 않은 것은?',
+    opts:['측정이 선행되어야 평가가 가능하다',
+          '측정은 객관적 수치이고, 평가는 그 수치를 근거로 한 가치 판단이다',
+          '측정: "체중 56kg" / 평가: "이 정도면 양호한 체중이다"',
+          '측정은 "체중 56kg"이라는 주관적 수치, 평가는 "이 정도면 양호하다"는 객관적 판단으로 표현된다']},
+  {n:6, p:2, q:'다음 중 측정의 척도(scale) 분류에 대한 설명으로 옳은 것은?',
+    opts:['축구 선수의 등번호는 순서의 의미를 가지므로 서열척도에 해당한다',
+          '달리기 순위(1등, 2등, 3등)는 순위 간 간격이 동일하지 않으므로 서열척도에 해당한다',
+          '체력검사 점수(예: 윗몸일으키기 30회)는 절대적 영점(0)이 없으므로 동간척도에 해당한다',
+          '키와 몸무게는 범주형 데이터이므로 명목척도에 해당한다']},
+  {n:7, p:2, q:"측정이론에서 '진점수(true score)'에 대한 설명으로 옳은 것은?",
+    opts:['측정 도구가 직접 표시해주는 수치이다',
+          '오차 없는 참값으로, 대부분의 경우 직접 확인이 불가능해 추정의 대상이 된다',
+          '모든 측정에서 반드시 정확히 계산해낼 수 있는 값이다',
+          '최적표준(gold standard) 장비를 사용하면 항상 정확히 알아낼 수 있다']},
+
+  // ▶ 8번: 체계적 오차
+  {n:8, p:2, q:"다트 과녁 비유에서 '체계적 오차'를 나타내는 상황으로 옳은 것은?",
+    opts:['화살이 과녁 전체에 방향 없이 흩어져 박힌 경우',
+          '화살이 한쪽으로 일관되게 치우쳐 모여 박힌 경우',
+          '화살이 매번 정중앙에 정확히 박힌 경우',
+          '화살이 쏠 때마다 전혀 다른 위치에 무작위로 박힌 경우']},
+
+  // ▶ 10번: 건강체력
+  {n:10, p:2, q:'다음 중 건강체력에 해당하는 항목으로 가장 적절하지 않은 것은?',
+    opts:['신체조성','근지구력','순발력','심폐지구력']},
+
+  // ▶ 11번: 평가의 구성 요소
+  {n:11, p:2, q:'평가의 구성 요소인 장점(merit)·가치(worth)·중요성(significance)에 대한 설명으로 옳은 것은?',
+    opts:['장점(merit)은 값(가격)에 견준 유용성을 의미한다',
+          '가치(worth)는 그 대상 자체의 질을 의미한다',
+          '중요성(significance)은 평가자 개인에게 그것이 갖는 의미를 의미한다',
+          '세 요소는 서로 독립적이어서 평가에는 한 가지 요소만 반영하면 충분하다']},
+
+  // ▶ 12번: 평가·사정·감정·연구 짝짓기
+  {n:12, p:2, q:'다음 〈보기〉의 ㄱ~ㄷ은 평가(evaluation)·사정(assessment)·감정(appraisal) 중 하나를 설명한 것이다. 각 설명에 해당하는 개념을 옳게 짝지은 것은?\n\n〈보기〉\nㄱ. 자료 모으기→분석→판단→결정에 이르는 전 과정을 포괄하며, 최종적으로 계속·수정·중단을 근거 있게 정하는 것을 목적으로 한다.\nㄴ. 전문가가 대상의 가치를 추정하는 데 초점을 맞추며, 일반적으로 정해진 절차를 진행하는 도중 상태를 점검하는 데 쓰인다.\nㄷ. 일반 법칙을 도출하는 것이 목적이며, 좋다·나쁘다를 정하지 않고 자료를 체계적으로 모으는 행위에 해당한다.',
+    opts:['ㄱ-평가, ㄴ-사정, ㄷ-연구','ㄱ-평가, ㄴ-감정, ㄷ-사정','ㄱ-사정, ㄴ-평가, ㄷ-감정','ㄱ-평가, ㄴ-감정, ㄷ-연구']},
+
+  // ▶ 13번: 연구 vs 프로그램 평가
+  {n:13, p:2, q:'연구(research)와 프로그램 평가(program evaluation)의 차이에 대한 설명으로 옳지 않은 것은?',
+    opts:['연구는 연구자 중심의 통제·관리로 의사결정이 이루어지는 반면, 프로그램 평가는 핵심 이해당사자의 참여와 협업을 중심으로 이루어진다',
+          '연구는 주로 사실(facts)과 효과성에 관심을 두는 반면, 프로그램 평가는 장점·가치·중요도 등 가치(values)에 관심을 둔다',
+          '연구의 타당도 기준에는 내적 타당도와 외적 타당도가 포함되며, 프로그램 평가의 기준에는 유용성·실현가능성·적합성·정확성이 포함된다',
+          '연구의 의사결정 방식은 핵심 이해당사자 참여를 중심으로 하며, 프로그램 평가는 연구자 중심 통제로 이루어진다']},
+
+  // ▶ 14번: 십자인대 사례
+  {n:14, p:2, q:"십자인대 재활 사례를 통해 정리한 검사·측정·사정·평가의 관계에 대한 설명으로 옳지 않은 것은?",
+    opts:['무릎 각도기로 무릎을 재는 도구 자체의 행위는 \'검사\'에 해당한다',
+          '"무릎 90도"라는 가치 판단 없는 기록은 \'측정\'에 해당한다',
+          '재활 도중 상태를 수시로 점검하며 진행 방향을 조정하는 것은 \'평가\'에 해당한다',
+          '선수의 출전 여부를 최종적으로 결정하는 것은 \'평가\'에 해당한다']},
+
+  // ▶ 15번: 진단·형성·총괄평가
+  {n:15, p:2, q:'진단평가·형성평가·총괄평가에 대한 설명으로 옳게 짝지어진 것은?',
+    opts:['학기 초 학생들의 기초체력을 사전 측정하는 것 - 형성평가',
+          '수업이 진행되는 동안 동작을 수시로 관찰하고 난이도를 조정하는 것 - 진단평가',
+          '학기 말에 최종 목표 달성 여부를 확인하고 성장을 판정하는 것 - 총괄평가',
+          '미리 입맛을 파악하는 것은 총괄평가에 해당하고, 손님상에 별점을 매기는 것은 진단평가에 해당한다']},
+
+  // ▶ 16번: 4P's
+  {n:16, p:2, q:"지역 교육청이 '학생 비만 줄이기'를 목표로 다음과 같이 실행했다고 할 때, 〈보기〉의 각 활동을 4P's에 옳게 짝지은 것은?\n\n〈보기〉\nㄱ. 교육청이 \"모든 학교에 주 3회 신체활동 시간을 확보하라\"는 방침을 수립\nㄴ. 각 학교가 '아침 줄넘기 교실'을 운영\nㄷ. 학생별 수준에 맞춰 운동 강도를 조절하는 방법을 적용\nㄹ. 만보계 앱으로 학생들의 활동량을 측정",
+    opts:['ㄱ-정책, ㄴ-프로그램, ㄷ-전략, ㄹ-도구',
+          'ㄱ-프로그램, ㄴ-정책, ㄷ-도구, ㄹ-전략',
+          'ㄱ-정책, ㄴ-전략, ㄷ-프로그램, ㄹ-도구',
+          'ㄱ-도구, ㄴ-프로그램, ㄷ-전략, ㄹ-정책']},
+
+  // ▶ 17번: 최대수행검사 vs 전형적수행검사
+  {n:17, p:2, q:"다음 중 '최대수행검사'와 '전형적수행검사'의 구분으로 옳지 않은 것은?",
+    opts:['최대수행검사는 "있는 힘껏 최대한"을 요구하며 능력의 최고치를 측정 대상으로 한다',
+          '전형적수행검사는 "평소 모습 그대로"를 요구하며 일상의 습관·태도를 측정 대상으로 한다',
+          '체력검사·기록 측정은 최대수행검사의 예시에 해당한다',
+          '설문조사는 응답이 부풀려질 위험이 없어, 전형적수행검사 중 가장 정확한 측정 도구로 평가된다']},
+
+  // ▶ 18번: 좋은 검사의 5가지 조건
+  {n:18, p:2, q:"'좋은 검사가 갖춰야 할 5가지 조건'에 대한 설명으로 옳지 않은 것은?",
+    opts:['대표성은 일부 표본(검사 문항·동작)이 측정하려는 전체 능력을 잘 대표하는지를 의미한다',
+          '표준화된 절차는 누가, 언제 검사를 실시해도 동일한 결과가 나오도록 하는 것을 의미한다',
+          '타당도가 한 번 입증된 검사 도구라면, 측정 대상이나 사용 목적이 달라지더라도 그 타당도는 그대로 유지된다',
+          '실용성은 검사가 아무리 정확해도 비용이 과도하거나 시간이 오래 걸리면 실제로 사용하기 어렵다는 것을 의미한다']},
+
+  // ▶ 19번: ICT 기기 신체활동 측정
+  {n:19, p:2, q:'ICT 기기를 활용한 신체활동 측정에 대한 설명으로 가장 옳지 않은 것은?',
+    opts:['가격이 비싼 ICT 기기일수록 측정의 정확성이 더 높다',
+          '손목형 웨어러블은 팔 흔들림을 걸음으로 인식하여, 카페에서의 수다 동작도 걷기로 과대추정할 수 있다',
+          '휠체어를 사용하는 학생의 손목형 기기 걸음 수가 낮게 측정되는 것은 실제 운동 부족이 아니라 기기의 측정 방식 한계일 수 있다',
+          "심박 모니터가 보여주는 '심박 160'이라는 수치 자체는 단순한 사실 정보일 뿐, 그것이 정상적인 운동 반응인지 위험 신호인지 판단하는 것은 사람의 몫이다"]},
+
+  // ▶ 20번: 규준 vs 준거
+  {n:20, p:2, q:'규준(norm)과 준거(criterion)에 대한 설명으로 옳은 것은?',
+    opts:['규준은 미리 정해 놓은 절대 기준에 도달했는지를 알려주는 잣대이다',
+          '준거는 집단의 점수 분포에서 내 위치를 알려주는 잣대이다',
+          '100m 달리기 시합에서 옆 사람을 제쳐야 메달이 생기는 것은 규준에 해당된다',
+          '규준과 준거는 동일한 평가 방식을 가리키는 동의어이다']},
+
+  // ▶ 22번: 규준/준거지향평가 특성
+  {n:22, p:2, q:'규준지향평가와 준거지향평가 각각의 3가지 핵심 특성에 대한 설명으로 옳지 않은 것은?',
+    opts:['규준지향평가에서 내 점수는 그 자체로 의미가 없고, 집단 안에서의 순위·백분위로 실력이 증명된다',
+          '규준지향평가는 경쟁을 통한 외적 동기를 강조하여, 보상과 인정이 절대적 성취가 아닌 상대적 성취로 결정된다',
+          '준거지향평가는 성취를 상대적인 것으로 보아, 적절한 환경만 주어지면 누구나 목표에 도달할 수 있다고 본다',
+          '준거지향평가는 다른 사람의 성과와 관계없이 참여자가 \'무엇을\' 성취했는지를 확인하는 것이 목적이다']},
+
+  // ▶ 23번: 40점 해석 차이
+  {n:23, p:2, q:"같은 '40점'을 받았을 때, 규준지향평가와 준거지향평가의 해석 차이에 대한 설명으로 옳은 것은?",
+    opts:['두 평가 모두 집단 분포에 따라 40점의 의미가 달라진다',
+          '규준지향평가에서는 집단 분포와 무관하게 40점이 항상 동일하게 해석되지만, 준거지향평가에서는 집단 분포에 따라 해석이 달라진다',
+          '규준지향평가에서는 집단 분포에 따라 40점이 우등생일 수도, 꼴찌일 수도 있지만, 준거지향평가에서는 기준선(예: 70점)에 도달했는지만으로 일관되게 "미달"로 판정된다',
+          '준거지향평가는 항상 규준지향평가보다 더 정확한 평가 방식이다']},
+
+  // ▶ 25번: 상황별 평가 방식
+  {n:25, p:2, q:"다음 〈보기〉의 상황에 적합한 평가 방식을 옳게 짝지은 것은?\n\n〈보기〉\nㄱ. 국가대표 선발처럼 정원이 제한된 상황\nㄴ. 스포츠지도사 자격시험처럼 일정 기준만 넘으면 합격하는 상황\nㄷ. 특수체육 학생의 개별화 목표 달성 여부를 확인하는 상황",
+    opts:['ㄱ-규준지향, ㄴ-준거지향, ㄷ-준거지향',
+          'ㄱ-준거지향, ㄴ-규준지향, ㄷ-준거지향',
+          'ㄱ-규준지향, ㄴ-규준지향, ㄷ-준거지향',
+          'ㄱ-준거지향, ㄴ-준거지향, ㄷ-규준지향']},
+
+  // ▶ 26번: 신뢰도 정의
+  {n:26, p:2, q:'신뢰도(Reliability)에 대한 설명으로 가장 적절한 것은?',
+    opts:['측정값이 실제 참값과 얼마나 가까운가를 의미한다',
+          '같은 사람·같은 조건에서 반복 측정 시 얼마나 비슷한 결과가 나오는가를 의미한다',
+          '검사 도구의 가격이 적절한가를 의미한다',
+          '측정 결과가 사회적으로 인정받는 정도를 의미한다']},
+
+  // ▶ 27번: 오차점수 계산
+  {n:27, p:2, q:"양궁 선수의 진짜 실력(T)이 9점이고, 오늘 측정한 결과(X)가 6점이었다면, 오차점수(E)는 얼마인가?",
+    opts:['+3점','-3점','0점','15점']},
+
+  // ▶ 28번: 우연/체계적 오차 짝짓기
+  {n:28, p:2, q:"다음 〈보기〉의 사례를 우연 오차와 체계적 오차로 옳게 짝지은 것은?\n\n〈보기〉\nㄱ. 지적장애 학생이 측정 당일 점심을 과식해서 평소보다 낮은 기록이 나왔다\nㄴ. 영점이 잘못 맞춰진 체중계로 측정할 때마다 항상 5kg 더 무겁게 나온다\nㄷ. 자폐 스펙트럼 학생이 낯선 측정자 때문에 불안해 출발 신호에 집중하지 못했다",
+    opts:['ㄱ-우연 오차, ㄴ-체계적 오차, ㄷ-우연 오차',
+          'ㄱ-체계적 오차, ㄴ-우연 오차, ㄷ-체계적 오차',
+          'ㄱ-우연 오차, ㄴ-우연 오차, ㄷ-체계적 오차',
+          'ㄱ-체계적 오차, ㄴ-체계적 오차, ㄷ-우연 오차']},
+
+  // ▶ 29번: 피어슨 r 사례
+  {n:29, p:2, q:"초등학생 7명의 턱걸이 검사에서, 모든 학생의 2차 점수가 1차보다 정확히 4점씩 낮게 나왔다고 가정하자. 이 경우에 대한 설명으로 옳은 것은?",
+    opts:['모든 학생의 점수가 똑같이 낮아졌으므로 피어슨 상관계수(r)는 0에 가깝게 나온다',
+          '피어슨 상관계수(r)는 1.0(완벽한 상관)으로 나오지만, 이는 검사의 신뢰도가 완벽하다는 것을 보장하지 않는다',
+          'r = 1.0이 나왔다면 두 검사의 평균과 표준편차도 반드시 동일하다는 것을 의미한다',
+          '이런 경우는 통계적으로 발생할 수 없는 비현실적 가정이다']},
+
+  // ▶ 30번: 재검사 vs 동형검사 신뢰도
+  {n:30, p:2, q:'재검사 신뢰도와 동형검사 신뢰도의 비교로 옳지 않은 것은?',
+    opts:['재검사는 동일 문항을 두 번 사용하므로 기억 효과가 발생할 수 있는 단점이 있다',
+          '동형검사는 다른 문항(동일 속성)을 사용하므로 기억 효과를 방지한다는 장점이 있다',
+          '체력·신체 측정에는 재검사가, 지식·설문 검사에는 동형검사가 더 적합한 상황이다',
+          '검사-재검사와 동형검사의 r 기준은 모두 0.9이다']},
+
+  // ▶ 31번: 크론바흐 알파
+  {n:31, p:2, q:"내적일관성 신뢰도를 설명하는 'Cronbach α'에 대한 설명으로 옳지 않은 것은?",
+    opts:['각 문항(악기)이 다른 소리를 내지만 모두 같은 방향(같은 악보, 같은 개념)을 가리킬 때 내적일관성이 높다고 본다',
+          '역문항(예: "나는 운동이 싫다")은 점수가 높을수록 흥미가 낮다는 의미이므로, 분석 전 역코딩(점수 뒤집기)이 필요하다',
+          '내적일관성 신뢰도는 검사를 최소 두 번 이상 실시해야만 확인할 수 있다',
+          '항목 삭제 분석(Item-Deleted Alpha)에서 특정 문항을 제거했을 때 α가 크게 올라간다면, 그 문항은 불필요하므로 삭제해야 한다']},
+
+  // ▶ 32번: 신뢰도·타당도 사례
+  {n:32, p:2, q:"다음 사례에서 발생하고 있는 문제로 가장 적절한 것은?\n\n한 검사 도구는 이름이 '근지구력 검사'이지만, 실제로는 피검사자가 손잡이를 쥐는 힘, 즉 악력만을 측정한다. 같은 사람을 여러 번 측정하면 악력 수치는 거의 동일하게 나온다.",
+    opts:['신뢰도와 타당도가 모두 낮은 최악의 검사이다',
+          '신뢰도는 높지만, 측정하려는 구인(근지구력)을 실제로 측정하지 못해 타당도가 낮다',
+          '측정값이 매번 들쭉날쭉하므로 신뢰도가 낮은 것이 핵심 문제이다',
+          '악력과 근지구력은 본질적으로 동일한 개념이므로 문제가 없다']},
+
+  // ▶ 33번: 내용타당도 키워드
+  {n:33, p:2, q:'내용타당도(Content Validity)의 핵심 키워드 두 가지로 옳게 짝지은 것은?',
+    opts:['상관계수, 정량적 분석','대표성, 전문가 판단','요인분석, 통계적 검증','표준화, 무작위 배정']},
+
+  // ▶ 34번: 내용타당도 적용
+  {n:34, p:2, q:"특수체육 기초 체력 검사를 개발하면서, 체력의 5요소(심폐지구력·근력·근지구력·유연성·신체조성) 중 '달리기'와 '윗몸일으키기' 단 두 항목만으로 검사를 구성했다. 이에 대한 평가로 가장 적절한 것은?",
+    opts:['두 항목 모두 신뢰할 만한 도구이므로 검사 전체의 타당도도 높다',
+          '유연성과 신체조성 영역이 빠져 전체 체력을 대표하지 못하므로 내용타당도가 낮다',
+          '항목 수가 적을수록 검사 시간이 짧아지므로 타당도가 높아진다',
+          '전문가 판단 없이도 통계적으로 충분히 검증된 구성이다']},
+
+  // ▶ 35번: 턱걸이 대체 문항 논의
+  {n:35, p:2, q:"턱걸이 검사를 대체할 종목을 선정하기 위한 전문가 패널 논의 내용으로 옳지 않은 것은?",
+    opts:['턱걸이는 바닥효과(floor effect)로 인해 신체 제한이 있는 학생들의 변별력이 떨어진다는 문제가 제기되었다',
+          '악력은 전완근의 근력을 측정하는 것이므로 근지구력 측정방법으로 보기 어렵다는 의견이 있었다',
+          '팔굽혀펴기의 주동근은 턱걸이의 주동근과 동일한 근육이므로 별도 검토 없이 대체 가능하다는 결론이 나왔다',
+          '플랭크는 팔근육의 동원율이 낮고 측정에 소요되는 시간이 상대적으로 길다는 단점이 논의되었다']},
+
+  // ▶ 36번: 준거타당도
+  {n:36, p:2, q:'준거타당도(Criterion Validity)에 대한 설명으로 옳은 것은?',
+    opts:['전문가의 정성적 판단만으로 검증하며 수치화하지 않는다',
+          '연구 설계가 외부 사건의 영향을 받지 않는 정도를 의미한다',
+          '보이지 않는 심리적 개념을 요인분석으로 검증하는 방법이다',
+          '새 검사와 이미 인정된 기준 간의 상관계수로 가까운 정도를 정량적으로 확인한다']},
+
+  // ▶ 37번: 동시타당도 vs 예측타당도
+  {n:37, p:2, q:'동시타당도(Concurrent Validity)와 예측타당도(Predictive Validity)의 결정적 차이로 가장 적절한 것은?',
+    opts:['동시타당도는 새 검사와 준거를 같은 시기에 측정하고, 예측타당도는 지금 측정한 값으로 미래의 준거를 예측한다',
+          '동시타당도는 통계 방법을 쓰고, 예측타당도는 전문가 판단을 쓴다',
+          '동시타당도는 표본 수가 적어도 되고, 예측타당도는 300명 이상이 필요하다',
+          '동시타당도는 검사도구의 타당도이고, 예측타당도는 연구설계의 타당도이다']},
+
+  // ▶ 38번: AI 시스템 도입 타당도
+  {n:38, p:2, q:"특수체육 현장에서 휠체어 농구 슛 자세를 평가하는 AI 시스템을 새로 개발했다. 이 시스템을 현장에 도입하기 전, 타당도 관점에서 가장 우선적으로 확인해야 할 절차는?",
+    opts:['AI 시스템의 화면 디자인이 사용자에게 직관적인지 설문조사한다',
+          '같은 AI 시스템으로 동일 영상을 반복 분석해 결과가 일치하는지만 확인한다',
+          '숙련된 전문가의 자세 평가 결과와 AI 분석 결과 간의 상관계수를 확인한다',
+          '시스템의 서버 응답 속도와 데이터 저장 용량을 점검한다']},
+
+  // ▶ 40번: 구인 해당 항목
+  {n:40, p:2, q:"다음 중 '구인(Construct)'에 해당하는 것을 모두 고른 것은?\n\nㄱ. 50m 달리기 기록(초)\nㄴ. 신체적 자기효능감\nㄷ. 스포츠 불안\nㄹ. 체지방률(%)",
+    opts:['ㄱ, ㄴ','ㄴ, ㄷ','ㄱ, ㄹ','ㄴ, ㄹ']},
+
+  // ▶ 41번: 교란요인
+  {n:41, p:2, q:"한 연구자가 특수체육 프로그램 참여 학생들의 체력 향상을 추적했는데, 알고 보니 프로그램에 자발적으로 등록한 학생들이 원래 가정에서 부모와 함께 운동하는 습관이 있던 경우가 많았다. 체력 향상이 프로그램 때문인지, 가정에서의 운동 습관 때문인지 명확히 구분할 수 없게 되었다. 이는 무엇에 해당하는가?",
+    opts:['도구 문제(instrumentation)','교란요인(confounding)','피험자 탈락(attrition)','반복 검사 효과(testing effect)']},
+
+  // ▶ 42번: 내적·외적 타당도
+  {n:42, p:2, q:'내적 타당도(Internal Validity)와 외적 타당도(External Validity)의 관계에 대한 설명으로 가장 적절한 것은?',
+    opts:['내적 타당도는 검사도구 자체의 타당도이고, 외적 타당도는 연구 설계의 타당도이다',
+          '내적 타당도는 "결과 변화가 순수하게 연구 변인 때문인가"를 묻고, 외적 타당도는 "연구 결과를 다른 상황·집단에 일반화할 수 있는가"를 묻는다',
+          '내적 타당도가 확보되면 외적 타당도는 자동으로 함께 확보된다',
+          '두 타당도 모두 내용·준거·구인타당도와 동일한 차원에 속하는 개념이다']},
+
+  // ▶ 44번: 통계분석 3가지 목적
+  {n:44, p:2, q:'통계분석의 3가지 목적으로 옳게 짝지은 것은?',
+    opts:['기술(Description) - 설명(Explanation) - 예측(Prediction)',
+          '수집(Collection) - 검증(Verification) - 보고(Reporting)',
+          '측정(Measurement) - 평가(Evaluation) - 판정(Judgment)',
+          '표본(Sampling) - 추정(Estimation) - 일반화(Generalization)']},
+
+  // ▶ 46번: 변동계수(CV) 해석
+  {n:46, p:2, q:'아래는 농구동아리 30명의 체력측정 결과 변동계수(CV)이다. 이에 대한 해석으로 가장 적절한 것은?\n\n[배근력: 평균 94kg, 표준편차 12, CV 12.8% / 서전트점프: 평균 70cm, 표준편차 10, CV 14.3% / 100m달리기: 평균 14초, 표준편차 1.5, CV 10.7%]',
+    opts:['표준편차 수치만 보면 배근력(12)이 서전트점프(10)보다 작으므로 배근력의 개인차가 더 적다',
+          '변동계수가 가장 낮은 100m 달리기가 학생들 간 개인차가 상대적으로 가장 적다',
+          '세 종목 모두 단위가 다르므로 분산도를 비교하는 것 자체가 불가능하다',
+          '변동계수가 가장 높은 100m 달리기가 학생들 간 개인차가 가장 크다']},
+
+  // ▶ 47번: p<.05 의미
+  {n:47, p:2, q:'양측 검정 기준으로 Z=1.96 지점을 기각역으로 설정했을 때, p<.05의 의미를 가장 적절하게 설명한 것은?',
+    opts:['영가설이 참일 때 지금과 같은(또는 더 극단적인) 결과가 우연히 나타날 확률이 5% 미만이라는 뜻으로, Z=±1.96 바깥(기각역)에 결과가 위치하면 통계적으로 유의미하다고 판단한다',
+          '연구 대상자의 5% 미만이 정상적으로 반응했다는 뜻이다',
+          '측정 오차가 전체 자료의 5% 미만이라는 뜻이다',
+          '연구 결과를 100% 확신할 수 있다는 뜻이다']},
+
+  // ▶ 48번: 서술통계 vs 추리통계
+  {n:48, p:2, q:"다음 중 서술통계와 추리통계의 특징을 옳게 짝지은 것은?\n[서술통계 / 추리통계]\n① 표본→모집단 추정 / 수집 자료 요약·정리\n② 수집 자료 요약·정리 / 표본→모집단 추정\n③ 평균·표준편차 / t-검정·ANOVA\n④ t-검정·ANOVA / 평균·표준편차",
+    opts:['①과 ④','②와 ③','①과 ③','②와 ④']},
+
+  // ▶ 49번: 변인 역할 짝짓기
+  {n:49, p:2, q:"'특수체육 신체활동 프로그램이 대사성증후군 지수에 미치는 영향' 연구에서 각 변인의 역할을 옳게 짝지은 것은?\n[독립변인(IV) / 종속변인(DV) / 매개변인(통제 필요)]\n① 신체활동 프로그램 참여 여부 / 대사성증후군 지수 / 참가자의 평소 식습관\n② 대사성증후군 지수 / 신체활동 프로그램 참여 여부 / 참가자의 평소 식습관\n③ 신체활동 프로그램 참여 여부 / 참가자의 평소 식습관 / 대사성증후군 지수\n④ 참가자의 평소 식습관 / 대사성증후군 지수 / 신체활동 프로그램 참여 여부",
+    opts:['①','②','③','④']},
+
+  // ▶ 45번: 교차빈도분석표
+  {n:45, p:2, q:'다음 교차빈도분석표를 보고 옳게 해석한 것은?\n\n[학년 / 남학생 / 여학생 / 주변빈도(%)]\n[5학년 / 40(27.97) / 47(32.87) / 87(60.84)]\n[6학년 / 31(21.68) / 25(17.48) / 56(39.16)]\n[주변빈도(%) / 71(49.65) / 72(50.35) / 143(100%)]',
+    opts:['전체 143명 중 5학년이 차지하는 비율은 약 39.16%이다',
+          '전체 143명 중 여학생이 차지하는 비율은 남학생보다 훨씬 높다',
+          '6학년 여학생은 전체 143명 중 약 17.48%를 차지한다',
+          '남학생과 여학생의 전체 인원은 동일하게 71.5명씩이다']}
+];
+
+// ── 서술·계산형 문항 ──
+const ESSAY = [
+  {n:1, p:3, q:'신체활동(Physical Activity)과 운동(Exercise), 스포츠의 관계를 서술하시오. (단, 두 개념이 동일한 것인지 아닌지를 명확히 밝힐 것)'},
+  {n:2, p:3, q:'체중 60kg인 사람이 강도 6 MET에 해당하는 신체활동을 50분간 수행했다. 이 활동으로 소비한 칼로리(kcal)를 계산 과정과 함께 구하시오. (1 MET = 3.5 ml·kg⁻¹·min⁻¹, 산소 1L당 약 5kcal로 계산)'},
+  {n:4, p:2, q:'WHO 가이드라인(2020)에서 휠체어 사용자의 좌식행동(sedentary behavior) 평가와 관련하여, 비장애인 기준을 그대로 적용할 수 없는 이유를 서술하시오.'},
+  {n:9, p:3, q:'PAPS-D는 지체장애만 따로 A·B·C 세 가지 유형으로 세분화하여 측정 방법을 제시하였다. 세 가지 유형의 종류와 다르게 개발한 이유를 간단히 설명하시오.'},
+  {n:21, p:3, q:'세계육상연맹의 100m 종목 올림픽 출전 기준기록(준거)이 9.98초이고, 한국 국가대표 정원이 3명이라고 가정하자. 다음 선수 A·B·C·D 중 최종적으로 출전권을 얻을 3명을 고르고, 본인이 적용한 선발 원칙을 단계별로 서술하시오.\n\n[선수 A: 개인기록 9.95초, 세계랭킹 45위]\n[선수 B: 개인기록 10.08초, 세계랭킹 8위]\n[선수 C: 개인기록 9.97초, 세계랭킹 12위]\n[선수 D: 개인기록 10.05초, 세계랭킹 30위]'},
+  {n:24, p:2, q:'근육질 체형의 학생이 PAPS 검사에서 체력 등급은 1등급(상위권)을 받았지만, BMI 기준으로는 비만 판정을 받았다고 가정하자. 이 학생이 BMI 기준으로 비만 판정을 받은 이유를 BMI 계산 방식의 한계와 연결지어 설명하시오.'},
+  {n:43, p:2, q:'이미 DEXA처럼 가장 정확한 최적기준(Gold Standard) 장비가 있는데도, 연구자들이 굳이 새로운 스마트 체성분 분석기를 개발하여 동시타당도를 검증하려는 이유를 서술하시오.'},
+  {n:50, p:2, q:'국민체력100 사업에서 전국 성인 여성의 체지방률 전국 평균을 산출하려고 한다. 아래 권역별 자료를 활용하여 물음에 답하시오.\n\n[수도권: 표본수 600명, 체지방률 평균 28%]\n[충청권: 표본수 200명, 체지방률 평균 26%]\n[영남권: 표본수 200명, 체지방률 평균 29%]\n\n(1) 단순 산술평균으로 전국 평균을 계산하면 얼마인가? (소수점 둘째 자리까지)\n(2) (1)의 방법이 전국 평균을 산출하는 데 적절하지 않은 이유를 서술하시오.\n(3) 올바른 전국 평균(가중평균)을 계산 과정과 함께 구하시오.'}
+];
+
+// ── 시스템 로직 ──
+let stu={sid:'',sname:''}, mode='', warnCnt=0, endTime=0, timerInt=null, autoInt=null, graceUntil=0, locked=false, lockInt=null;
+
+function checkCode(code){
+  if(code===EXAM_CONFIG.recoveryCode) return {ok:true,type:'recovery'};
+  if(code===EXAM_CONFIG.mainCode){
+    if(new Date()>new Date(EXAM_CONFIG.hardEnd)) return {ok:false,msg:'시험이 종료되었습니다. 제출하지 못했다면 교수님께 문의하세요.'};
+    return {ok:true,type:'main'};
+  }
+  return {ok:false,msg:'접속 코드가 올바르지 않습니다.'};
+}
+
+function enter(){
+  const sid=document.getElementById('sid').value.trim();
+  const sname=document.getElementById('sname').value.trim();
+  const code=document.getElementById('code').value.trim();
+  const err=document.getElementById('login-err');
+  if(!sid||!sname){err.textContent='학번과 이름을 모두 입력하세요.';return;}
+  if(!code){err.textContent='접속 코드를 입력하세요.';return;}
+  const r=checkCode(code);
+  if(!r.ok){err.textContent=r.msg;return;}
+  stu={sid,sname};
+  mode=(r.type==='recovery')?'recovery':'main';
+  startExam();
+}
+
+function startKey(){return 'exam_start_'+SUBJECT+'_'+stu.sid;}
+function startExam(){
+  document.getElementById('login').style.display='none';
+  document.getElementById('exam').style.display='block';
+  document.getElementById('stuinfo').textContent=stu.sname+' ('+stu.sid+')'+(mode==='recovery'?' · 관리자/복구 모드':'');
+  renderQuestions();
+  loadLocal();
+  const hardEnd=new Date(EXAM_CONFIG.hardEnd).getTime();
+  if(mode==='recovery'){
+    endTime=hardEnd;
+  } else {
+    let startedAt=parseInt(localStorage.getItem(startKey())||'0',10);
+    if(!startedAt){startedAt=Date.now();try{localStorage.setItem(startKey(),String(startedAt));}catch(e){}}
+    endTime=Math.min(startedAt+EXAM_CONFIG.durationMin*60000,hardEnd);
+  }
+  tick();
+  timerInt=setInterval(tick,1000);
+  autoInt=setInterval(()=>{saveLocal();sendData({_autosave:true});},30000);
+  setupBlurGuard();
+  graceUntil=Date.now()+800;
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+
+function renderQuestions(){
+  // 문항 번호 순으로 정렬
+  const allQ=[...MC].sort((a,b)=>a.n-b.n);
+  const allE=[...ESSAY].sort((a,b)=>a.n-b.n);
+
+  let h='';
+  allQ.forEach(m=>{
+    h+='<div class="q"><div class="q-head"><span class="q-no">'+m.n+'번</span><span class="q-pts">'+m.p+'점</span><span class="q-text">'+esc(m.q)+'</span></div>';
+    m.opts.forEach((o,i)=>{
+      const num=['①','②','③','④'][i];
+      h+='<label class="opt" id="opt_'+m.n+'_'+(i+1)+'" onclick="pickMC('+m.n+','+(i+1)+')"><input type="radio" name="mc_'+m.n+'" value="'+(i+1)+'"><span class="onum">'+num+'</span><span class="otext">'+esc(o)+'</span></label>';
+    });
+    h+='</div>';
+  });
+  document.getElementById('questions').innerHTML=h;
+
+  let eh='';
+  allE.forEach(e=>{
+    eh+='<div class="q"><div class="q-head"><span class="q-no">'+e.n+'번</span><span class="q-pts">'+e.p+'점</span><span class="q-text">'+esc(e.q)+'</span></div>';
+    eh+='<textarea id="es_'+e.n+'" placeholder="답안을 입력하세요" oninput="onInput()"></textarea>';
+    eh+='</div>';
+  });
+  document.getElementById('essay-questions').innerHTML=eh;
+}
+
+function pickMC(n,v){
+  document.querySelectorAll('[id^="opt_'+n+'_"]').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('opt_'+n+'_'+v).classList.add('sel');
+  document.querySelector('input[name="mc_'+n+'"][value="'+v+'"]').checked=true;
+  onInput();
+}
+function onInput(){saveLocal();updateProg();}
+function collectAns(){
+  const mc={};
+  MC.forEach(m=>{const s=document.querySelector('input[name="mc_'+m.n+'"]:checked');if(s)mc[m.n]=parseInt(s.value);});
+  const essay={};
+  ESSAY.forEach(e=>{const v=document.getElementById('es_'+e.n);if(v&&v.value.trim())essay[e.n]=v.value.trim();});
+  return {mc,essay};
+}
+function updateProg(){
+  const a=collectAns();
+  document.getElementById('prog').textContent=Object.keys(a.mc).length+Object.keys(a.essay).length;
+}
+function lsKey(){return 'exam_result_'+SUBJECT+'_'+stu.sid;}
+function saveLocal(){try{localStorage.setItem(lsKey(),JSON.stringify(buildPayload({})));}catch(e){}}
+function loadLocal(){
+  try{
+    const raw=localStorage.getItem(lsKey());if(!raw)return;
+    const d=JSON.parse(raw);
+    if(d.ans&&d.ans.mc) Object.entries(d.ans.mc).forEach(([n,v])=>pickMC(parseInt(n),v));
+    if(d.ans&&d.ans.essay) Object.entries(d.ans.essay).forEach(([n,v])=>{const t=document.getElementById('es_'+n);if(t)t.value=v;});
+    updateProg();
+  }catch(e){}
+}
+function manualSave(){
+  saveLocal();sendData({_manualsave:true});
+  const m=document.getElementById('savemsg');
+  m.textContent='✅ 저장됨 ('+new Date().toLocaleTimeString('ko-KR')+')';
+  setTimeout(()=>{m.textContent='';},4000);
+}
+function buildPayload(extra){
+  return Object.assign({_subject:SUBJECT,sid:stu.sid,sname:stu.sname,warnCnt:warnCnt,ans:collectAns(),savedAt:new Date().toLocaleString('ko-KR'),_recovery:(mode==='recovery'),_autosave:false,_manualsave:false,_final:false},extra);
+}
+function sendData(extra){
+  if(EXAM_CONFIG.scriptURL.indexOf('http')!==0)return;
+  try{fetch(EXAM_CONFIG.scriptURL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(buildPayload(extra))});}catch(e){}
+}
+function submitExam(auto){
+  const a=collectAns();
+  const total=MC.length+ESSAY.length;
+  const un=total-Object.keys(a.mc).length-Object.keys(a.essay).length;
+  if(!auto){
+    if(un>0&&!confirm('아직 답하지 않은 문항이 '+un+'개 있습니다.\n그래도 제출하시겠습니까?'))return;
+    if(!confirm('제출하면 더 이상 수정할 수 없습니다.\n제출하시겠습니까?'))return;
+  }
+  graceUntil=Date.now()+1500;
+  saveLocal();sendData({_final:true});
+  clearInterval(timerInt);clearInterval(autoInt);removeBlurGuard();
+  document.getElementById('exam').style.display='none';
+  document.getElementById('done').style.display='block';
+  document.getElementById('done-msg').innerHTML='<b>'+stu.sname+'</b> ('+stu.sid+') 님의 답안이 제출되었습니다.<br>'+(auto?'시험 시간이 종료되어 자동 제출되었습니다.<br>':'')+'수고하셨습니다.';
+}
+function tick(){
+  const left=Math.max(0,Math.floor((endTime-Date.now())/1000));
+  const t=document.getElementById('timer');
+  if(mode==='recovery'){t.textContent='관리자';return;}
+  t.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');
+  if(left===300)alert('시험 종료 5분 전입니다. 저장 상태를 확인하세요.');
+  if(left<=120)t.classList.add('warn');else t.classList.remove('warn');
+  if(left<=0){clearInterval(timerInt);submitExam(true);}
+}
+function onLeave(){
+  if(Date.now()<graceUntil)return;
+  if(document.getElementById('exam').style.display==='none')return;
+  if(mode==='recovery')return;
+  if(locked)return;
+  locked=true;warnCnt++;
+  const lock=document.getElementById('lock');lock.style.display='flex';
+  let n=LOCK_SEC;document.getElementById('lock-cnt').textContent=n;
+  if(lockInt)clearInterval(lockInt);
+  lockInt=setInterval(()=>{
+    n--;document.getElementById('lock-cnt').textContent=n;
+    if(n<=0){clearInterval(lockInt);lockInt=null;lock.style.display='none';locked=false;graceUntil=Date.now()+600;}
+  },1000);
+  sendData({_autosave:true});
+}
+function setupBlurGuard(){document.addEventListener('visibilitychange',visHandler);window.addEventListener('blur',blurHandler);}
+function removeBlurGuard(){document.removeEventListener('visibilitychange',visHandler);window.removeEventListener('blur',blurHandler);}
+function visHandler(){if(document.hidden)onLeave();}
+function blurHandler(){onLeave();}
+</script>
+</body>
+</html>
